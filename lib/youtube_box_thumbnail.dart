@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:youtube_box_thumbnail/youtube_video.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,7 +45,9 @@ class _YoutubeBoxThumbnailState extends State<YoutubeBoxThumbnail> {
         future: youtubeVideo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _YoutubeVideoWidget(youtubeVideo: snapshot.data!);
+            return InkWell(
+              child: _YoutubeVideoWidget(youtubeVideo: snapshot.data!),
+            );
           } else if (snapshot.hasError) {
             return Text("error");
           } else {
@@ -69,6 +72,12 @@ class _YoutubeBoxThumbnailState extends State<YoutubeBoxThumbnail> {
       );
     } catch (ex) {
       rethrow;
+    }
+  }
+
+  Future<void> _launcherVideo() async {
+    if (await launchUrlString(widget.url)) {
+      //
     }
   }
 }
