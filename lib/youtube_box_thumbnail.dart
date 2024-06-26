@@ -14,8 +14,24 @@ class YoutubeBoxThumbnail extends StatefulWidget {
   const YoutubeBoxThumbnail({
     super.key,
     required this.url,
+    this.width,
+    this.height,
+    this.padding,
+    this.margin,
+    this.decoration,
+    this.loading,
+    this.error,
+    this.view,
   });
   final String url;
+  final double? width;
+  final double? height;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Decoration? decoration;
+  final Widget? loading;
+  final Widget Function(String url)? error;
+  final Widget Function(YoutubeVideo youtubeVideo)? view;
   @override
   State<YoutubeBoxThumbnail> createState() => _YoutubeBoxThumbnailState();
 }
@@ -47,7 +63,9 @@ class _YoutubeBoxThumbnailState extends State<YoutubeBoxThumbnail> {
           if (snapshot.hasData) {
             return _YoutubeVideoWidget(youtubeVideo: snapshot.data!);
           } else if (snapshot.hasError) {
-            return Text("error");
+            return _ErrorWidget(
+              url: widget.url,
+            );
           } else {
             return const _LoadingWidget();
           }
@@ -76,7 +94,9 @@ class _YoutubeBoxThumbnailState extends State<YoutubeBoxThumbnail> {
   String? _getIdFromYoutubeUrl() {
     for (var exp in [
       RegExp(r".*\?v=(.+?)&.+"),
-      RegExp(r"^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$")
+      RegExp(r"^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$"),
+      RegExp(r"^https:\/\/youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
+      RegExp(r"^https:\/\/www\.youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
     ]) {
       Match? match = exp.firstMatch(widget.url);
       if (match != null && match.groupCount >= 1) return match.group(1);
@@ -124,7 +144,7 @@ class _YoutubeVideoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        // await launchUrlString(youtubeVideo.url);
+        await launchUrlString(youtubeVideo.url);
       },
       child: Row(
         children: [
@@ -151,6 +171,8 @@ class _YoutubeVideoWidget extends StatelessWidget {
           ),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   youtubeVideo.title,
@@ -165,6 +187,63 @@ class _YoutubeVideoWidget extends StatelessWidget {
                 ),
                 Text(
                   youtubeVideo.url,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ErrorWidget extends StatelessWidget {
+  const _ErrorWidget({super.key, required this.url});
+  final String url;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        await launchUrlString(url);
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: _kBorderRadius,
+            ),
+            child: const Icon(
+              Icons.error_outline,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Unable to retrieve content",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.red,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  url,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

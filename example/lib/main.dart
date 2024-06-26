@@ -14,10 +14,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-            //title: const Text("Youtube box thumbnail - Example"),
-            ),
+          title: const Text("Youtube box thumbnail - Example"),
+        ),
         body: const YoutubeBoxThumbnail(
-          url: "https://youtu.be/rzhehuTJG9o?si=IvyITN_8E2zVDqMK",
+          url: "https://www.youtube.com/watch?v=LiM8IXH5eWE",
         ),
       ),
     );
