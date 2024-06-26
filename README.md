@@ -7,7 +7,7 @@ Package used to display video thumbnail box from youtube
 ### Depend on it
 ```dart
 dependencies:
-  youtube_box_thumbnail: ^1.0.0
+  youtube_box_thumbnail: ^1.0.0+1
 ```
 
 ## Example
