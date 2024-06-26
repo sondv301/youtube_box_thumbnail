@@ -1,6 +1,6 @@
 name: youtube_box_thumbnail
 description: "Package used to display video thumbnail box from youtube"
-version: 1.0.0+1
+version: 1.0.1
 homepage: https://sondv301.github.io/
 repository: https://github.com/sondv301/youtube_box_thumbnail
 

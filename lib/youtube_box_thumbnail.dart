@@ -44,27 +44,36 @@ class _YoutubeBoxThumbnailState extends State<YoutubeBoxThumbnail> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.maxFinite,
-      height: 100,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade300,
-        ),
-        borderRadius: _kBorderRadius,
-      ),
+      width: widget.width ?? double.maxFinite,
+      height: widget.height ?? 100,
+      padding: widget.padding ?? const EdgeInsets.all(12),
+      margin: widget.margin ?? const EdgeInsets.all(12),
+      decoration: widget.decoration ??
+          BoxDecoration(
+            border: Border.all(
+              color: Colors.grey.shade300,
+            ),
+            borderRadius: _kBorderRadius,
+          ),
       child: FutureBuilder<YoutubeVideo>(
         future: youtubeVideo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _YoutubeVideoWidget(youtubeVideo: snapshot.data!);
+            if (widget.view == null) {
+              return _YoutubeVideoWidget(youtubeVideo: snapshot.data!);
+            } else {
+              return widget.view!.call(snapshot.data!);
+            }
           } else if (snapshot.hasError) {
-            return _ErrorWidget(
-              url: widget.url,
-            );
+            if (widget.error == null) {
+              return _ErrorWidget(
+                url: widget.url,
+              );
+            } else {
+              return widget.error!.call(widget.url);
+            }
           } else {
-            return const _LoadingWidget();
+            return widget.loading ?? const _LoadingWidget();
           }
         },
       ),
@@ -174,7 +183,7 @@ class _YoutubeVideoWidget extends StatelessWidget {
                 Text(
                   youtubeVideo.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
