@@ -11,7 +11,8 @@ dependencies:
 ```
 
 ## Example
-![](https://raw.githubusercontent.com/sondv301/youtube_box_thumbnail/main/assets/images/scr1.png "Example")
+
+![](https://raw.githubusercontent.com/sondv301/youtube_box_thumbnail/main/assets/images/sc1.png "Example")
 
 ```dart
 import 'package:flutter/material.dart';
