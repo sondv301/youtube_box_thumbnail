@@ -1,12 +1,9 @@
 library youtube_box_thumbnail;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:youtube_box_thumbnail/youtube_video.dart';
-import 'package:http/http.dart' as http;
 
 final _kBorderRadius = BorderRadius.circular(12);
 
